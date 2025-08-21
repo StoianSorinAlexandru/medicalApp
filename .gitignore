@@ -1,0 +1,63 @@
+# .NET / Visual Studio
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+_TestResults*/
+TestResults/
+*.VisualState.xml
+*.sarif
+*.coverage
+*.coveragexml
+
+# Build output
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+
+# NuGet
+*.nupkg
+*.snupkg
+*.nuget.props
+*.nuget.targets
+packages/
+.nuget/
+
+# Rider / VS Code / other IDEs
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# ASP.NET / Blazor
+wwwroot/lib/
+node_modules/
+libman.json.cache
+
+# EF Core (keep Migrations, ignore local SQLite DBs if any)
+*.db
+*.sqlite
+*.sqlite3
+*.db-shm
+*.db-wal
+
+# OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+*.stackdump
+$RECYCLE.BIN/
+
+# Publish artifacts
+publish/
+out/

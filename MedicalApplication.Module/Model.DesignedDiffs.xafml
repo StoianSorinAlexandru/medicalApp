@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application Title="MedicalApplication">
+  <NavigationItems>
+    <Items>
+      <Item Id="Medici" ViewId="Medic_ListView" IsNewNode="True" />
+      <Item Id="Pacienti" ViewId="Pacient_ListView" IsNewNode="True" />
+      <Item Id="Programari" ViewId="Programare_ListView" IsNewNode="True" />
+      <Item Id="Specializari" ViewId="Specializare_ListView" IsNewNode="True" />
+    </Items>
+  </NavigationItems>
+  <Options>
+    <LayoutManagerOptions RequiredFieldMark="*" />
+  </Options>
+  <SchemaModules>
+    <SchemaModule Name="SchedulerModuleBase" Version="25.1.4.0" IsNewNode="True" />
+    <SchemaModule Name="SystemModule" Version="25.1.4.0" IsNewNode="True" />
+  </SchemaModules>
+  <Views>
+    <DetailView Id="ReportDataV2_DetailView">
+      <Layout>
+        <LayoutGroup Id="Main">
+          <LayoutGroup Id="SimpleEditors">
+            <LayoutGroup Id="ReportDataV2">
+              <LayoutItem Id="DisplayName" ViewItem="DisplayName" Index="0" IsNewNode="True" Removed="True" />
+              <LayoutItem Id="ParametersObjectType" ViewItem="ParametersObjectType" Index="1" IsNewNode="True" Removed="True" />
+              <LayoutItem Id="DataTypeCaption" ViewItem="DataTypeCaption" Index="2" IsNewNode="True" Removed="True" />
+              <LayoutItem Id="IsInplaceReport" Index="3" ViewItem="IsInplaceReport" />
+            </LayoutGroup>
+          </LayoutGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+  </Views>
+</Application>

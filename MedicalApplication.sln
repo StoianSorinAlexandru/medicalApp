@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36401.2
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedicalApplication.Module", "MedicalApplication.Module\MedicalApplication.Module.csproj", "{FAF170F2-9CC5-967D-583A-05648674DA1E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedicalApplication.Blazor.Server", "MedicalApplication.Blazor.Server\MedicalApplication.Blazor.Server.csproj", "{07161139-2212-EEA4-F3DA-48F263D5D66C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		EasyTest|Any CPU = EasyTest|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FAF170F2-9CC5-967D-583A-05648674DA1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAF170F2-9CC5-967D-583A-05648674DA1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAF170F2-9CC5-967D-583A-05648674DA1E}.EasyTest|Any CPU.ActiveCfg = EasyTest|Any CPU
+		{FAF170F2-9CC5-967D-583A-05648674DA1E}.EasyTest|Any CPU.Build.0 = EasyTest|Any CPU
+		{FAF170F2-9CC5-967D-583A-05648674DA1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAF170F2-9CC5-967D-583A-05648674DA1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07161139-2212-EEA4-F3DA-48F263D5D66C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07161139-2212-EEA4-F3DA-48F263D5D66C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07161139-2212-EEA4-F3DA-48F263D5D66C}.EasyTest|Any CPU.ActiveCfg = EasyTest|Any CPU
+		{07161139-2212-EEA4-F3DA-48F263D5D66C}.EasyTest|Any CPU.Build.0 = EasyTest|Any CPU
+		{07161139-2212-EEA4-F3DA-48F263D5D66C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07161139-2212-EEA4-F3DA-48F263D5D66C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
