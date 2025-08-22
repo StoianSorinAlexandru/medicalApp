@@ -1,8 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using DevExpress.Persistent.Base;
+using DevExpress.ExpressApp;
 
 namespace MedicalApplication.Module.BusinessObjects
 {
+    [DefaultClassOptions]
+    [NavigationItem("Pacienți")]
     public class Pacient
     {
         public virtual Guid id { get; set; }
@@ -16,7 +20,7 @@ namespace MedicalApplication.Module.BusinessObjects
         [Phone]
         public virtual string NumarTelefon { get; set; }
 
-        [RegularExpression(@"^\d{13}$", ErrorMessage = "CNP must be exactly 13 digits")]
+        [RegularExpression(@"^\d{13}$", ErrorMessage = "CNP trebuie să conțină exact 13 cifre")]
         public virtual string CNP { get; set; }
     }
 }

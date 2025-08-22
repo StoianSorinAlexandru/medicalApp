@@ -1,8 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using DevExpress.Persistent.Base;
 
 namespace MedicalApplication.Module.BusinessObjects
 {
+    [DefaultClassOptions]
+    [NavigationItem("Medici")]
     public class Medic
     {
         public virtual Guid Id { get; set; }
@@ -10,8 +13,8 @@ namespace MedicalApplication.Module.BusinessObjects
         [Required]
         public virtual string Nume { get; set; }
 
-        // Optional: convenience property for Specializare name via navigation
         public virtual Specializare Specializare { get; set; }
+        [VisibleInListView(false), VisibleInDetailView(false), VisibleInLookupListView(false)]
         public virtual Guid? SpecializareId { get; set; }
     }
 }

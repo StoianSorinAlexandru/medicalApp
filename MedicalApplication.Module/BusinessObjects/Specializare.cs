@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using DevExpress.Persistent.Base;
 
 namespace MedicalApplication.Module.BusinessObjects
 {
+    [DefaultClassOptions]
+    [NavigationItem("Specializări")]
     public class Specializare 
     {
         public virtual Guid Id { get; set; }
