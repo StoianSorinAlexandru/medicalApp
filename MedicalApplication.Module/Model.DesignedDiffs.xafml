@@ -2,10 +2,7 @@
 <Application Title="MedicalApplication">
   <NavigationItems>
     <Items>
-      <Item Id="Medici" ViewId="Medic_ListView" IsNewNode="True" />
-      <Item Id="Pacienti" ViewId="Pacient_ListView" IsNewNode="True" />
-      <Item Id="Programari" ViewId="Programare_ListView" IsNewNode="True" />
-      <Item Id="Specializari" ViewId="Specializare_ListView" IsNewNode="True" />
+      <Item Id="Medici" IsNewNode="True" />
     </Items>
   </NavigationItems>
   <Options>
