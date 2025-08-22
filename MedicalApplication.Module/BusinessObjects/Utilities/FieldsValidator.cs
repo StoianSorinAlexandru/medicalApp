@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace MedicalApplication.Module.BusinessObjects.Utilities
 {
@@ -8,8 +9,12 @@ namespace MedicalApplication.Module.BusinessObjects.Utilities
     /// Validates Romanian CNP values for structure, control digit, and plausible date/county codes.
     /// Returns null when valid, or a localized error message when invalid. Null/empty values are considered valid.
     /// </summary>
-    public static class CnpValidator
+    public static class FieldsValidator
     {
+
+        private const string INVALID_PHONE_NUMBER = "Număr de telefon invalid.";
+        private const string VALID_PHONE_NUMBER = "Număr de telefon valid.";
+
         #region Public
         /// <summary>
         /// Performs validation of the supplied CNP string. Returns null when valid or when value is null/empty.
@@ -21,7 +26,7 @@ namespace MedicalApplication.Module.BusinessObjects.Utilities
 
             var digits = new string(cnp.Where(char.IsDigit).ToArray());
             if (digits.Length != 13)
-                return "CNP trebuie s? con?in? exact 13 cifre.";
+                return "CNP trebuie să conțină exact 13 cifre.";
 
             // Parse components
             int s = digits[0] - '0';
@@ -42,20 +47,20 @@ namespace MedicalApplication.Module.BusinessObjects.Utilities
                 _ => -1
             };
             if (century < 0)
-                return "Prima cifr? a CNP-ului este invalid?.";
+                return "Prima cifră a CNP-ului este invalidă.";
 
             // Validate date
             int year = century + yy;
             if (!IsValidDate(year, mm, dd))
-                return "Data din CNP este invalid?.";
+                return "Data din CNP este invalidă.";
 
             // County code 01..52
             if (county < 1 || county > 52)
-                return "Codul de jude? din CNP este invalid.";
+                return "Codul de județ din CNP este invalid.";
 
             // Sequence 001..999
             if (nnn < 1 || nnn > 999)
-                return "Secven?a numeric? din CNP este invalid?.";
+                return "Secvența numerică din CNP este invalidă.";
 
             // Control digit per algorithm
             var controlKey = "279146358279"; // 12 digits
@@ -67,9 +72,25 @@ namespace MedicalApplication.Module.BusinessObjects.Utilities
             int check = sum % 11;
             if (check == 10) check = 1;
             if (check != control)
-                return "Cifra de control a CNP-ului este invalid?.";
+                return "Cifra de control a CNP-ului este invalidă.";
 
             return null;
+        }
+
+        /// <summary>
+        /// Accepts E.164 (max 15 digits) or Romanian formats beginning with +40 or 0 and 9 digits following.
+        /// </summary>
+        public static (bool, string) IsValidPhone(string value)
+        {
+            value = value.Trim();
+            // E.164
+            var e164 = Regex.IsMatch(value, "^\\+[1-9]\\d{7,14}$");
+            // Romanian specific
+            var ro = Regex.IsMatch(value, "^(?:\\+40|0)\\d{9}$");
+            if (e164 || ro)
+                return (true, VALID_PHONE_NUMBER);
+            return (false, INVALID_PHONE_NUMBER);
+            
         }
         #endregion
 

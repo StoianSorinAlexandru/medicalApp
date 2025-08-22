@@ -12,7 +12,7 @@ namespace MedicalApplication.Module.BusinessObjects
     /// </summary>
     [DefaultClassOptions]
     [NavigationItem("Pacienți")]
-    public class Pacient : IValidatableObject
+    public class Pacient
     {
 
         #region Public Properties
@@ -44,46 +44,6 @@ namespace MedicalApplication.Module.BusinessObjects
         public virtual string CNP { get; set; }
         #endregion
 
-        #region Public - Validation
-        /// <summary>
-        /// Implements entity-level validation for CNP and Phone rules.
-        /// </summary>
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            // CNP: optional in model? Business requirement says it must be valid when present
-            if (!string.IsNullOrWhiteSpace(CNP))
-            {
-                var cnpError = Utilities.CnpValidator.Validate(CNP);
-                if (cnpError is not null)
-                {
-                    yield return new ValidationResult(cnpError, new[] { nameof(CNP) });
-                }
-            }
-
-            // Phone: optional; if present allow either E.164 or Romanian local format
-            if (!string.IsNullOrWhiteSpace(NumarTelefon))
-            {
-                if (!IsValidPhone(NumarTelefon))
-                {
-                    yield return new ValidationResult("Număr de telefon invalid. Folosiți formatul +40123456789 sau 0XXXXXXXXX.", new[] { nameof(NumarTelefon) });
-                }
-            }
-        }
-        #endregion
-
-        #region Private - Helpers
-        /// <summary>
-        /// Accepts E.164 (max 15 digits) or Romanian formats beginning with +40 or 0 and 9 digits following.
-        /// </summary>
-        private static bool IsValidPhone(string value)
-        {
-            value = value.Trim();
-            // E.164
-            var e164 = Regex.IsMatch(value, "^\\+[1-9]\\d{7,14}$");
-            // Romanian specific
-            var ro = Regex.IsMatch(value, "^(?:\\+40|0)\\d{9}$");
-            return e164 || ro;
-        }
-        #endregion
+ 
     }
 }
