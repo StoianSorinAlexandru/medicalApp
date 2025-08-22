@@ -14,6 +14,10 @@ namespace MedicalApplication.Module.BusinessObjects
     [NavigationItem("Pacienți")]
     public class Pacient : IValidatableObject
     {
+
+        //INCORECT COMMENT PLEASE REMOVE
+
+
         #region Public Properties
         /// <summary>
         /// Unique key generated as GUID.
