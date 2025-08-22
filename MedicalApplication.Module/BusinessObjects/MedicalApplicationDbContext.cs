@@ -7,6 +7,7 @@ using DevExpress.ExpressApp.Design;
 using DevExpress.ExpressApp.EFCore.DesignTime;
 using System.Text.Json;
 using System.IO;
+using System.ComponentModel.DataAnnotations;
 
 namespace MedicalApplication.Module.BusinessObjects;
 
@@ -101,5 +102,110 @@ public class MedicalApplicationEFCoreDbContext : DbContext {
         modelBuilder.SetOneToManyAssociationDeleteBehavior(DeleteBehavior.SetNull, DeleteBehavior.Cascade);
         modelBuilder.HasChangeTrackingStrategy(ChangeTrackingStrategy.ChangingAndChangedNotificationsWithOriginalValues);
         modelBuilder.UsePropertyAccessMode(PropertyAccessMode.PreferFieldDuringConstruction);
+
+        // Domain relationships and indexes
+        modelBuilder.Entity<Medic>()
+            .HasOne(m => m.Specializare)
+            .WithMany(s => s.MedicList)
+            .HasForeignKey(m => m.SpecializareId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Programare>()
+            .HasOne(p => p.Specializare)
+            .WithMany()
+            .HasForeignKey(p => p.SpecializareId)
+            .OnDelete(DeleteBehavior.Restrict);
+        modelBuilder.Entity<Programare>()
+            .HasOne(p => p.Medic)
+            .WithMany()
+            .HasForeignKey(p => p.MedicId)
+            .OnDelete(DeleteBehavior.Restrict);
+        modelBuilder.Entity<Programare>()
+            .HasOne(p => p.Pacient)
+            .WithMany()
+            .HasForeignKey(p => p.PacientId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Programare>()
+            .HasIndex(p => p.DataOra);
+        modelBuilder.Entity<Programare>()
+            .HasIndex(p => p.MedicId);
+        modelBuilder.Entity<Programare>()
+            .HasIndex(p => new { p.SpecializareId, p.MedicId });
     }
+
+    #region Public - Save Pipeline Validation
+    /// <summary>
+    /// Validates appointments for domain rules before saving changes.
+    /// </summary>
+    public override int SaveChanges()
+    {
+        ValidateAppointments();
+        return base.SaveChanges();
+    }
+
+    /// <summary>
+    /// Validates appointments for domain rules before saving changes (async).
+    /// </summary>
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        ValidateAppointments();
+        return await base.SaveChangesAsync(cancellationToken);
+    }
+    #endregion
+
+    #region Private - Validation Logic
+    /// <summary>
+    /// Applies domain validations: future date on create, doctor-specialty consistency, and overlap checks.
+    /// </summary>
+    private void ValidateAppointments()
+    {
+        var tz = TimeZoneInfo.FindSystemTimeZoneById("Europe/Bucharest");
+        var nowRo = TimeZoneInfo.ConvertTime(DateTime.UtcNow, tz);
+
+        var entries = ChangeTracker.Entries<Programare>()
+            .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified)
+            .Select(e => e.Entity)
+            .ToList();
+
+        foreach (var appt in entries)
+        {
+            // future date rule on create only
+            if (Entry(appt).State == EntityState.Added && appt.DataOra < nowRo)
+            {
+                throw new ValidationException("Programarea nu poate fi în trecut.");
+            }
+
+            // Doctor must belong to selected Specialty
+            if (appt.MedicId == Guid.Empty || appt.SpecializareId == Guid.Empty)
+                throw new ValidationException("Selectați specializarea și medicul.");
+
+            var medic = Medici.AsNoTracking().FirstOrDefault(m => m.Id == appt.MedicId);
+            if (medic == null)
+                throw new ValidationException("Medicul selectat nu există.");
+            if (medic.SpecializareId != appt.SpecializareId)
+                throw new ValidationException("Medicul nu aparține specializării selectate.");
+
+            // Overlap checks (30 min default duration). Ignore canceled appointments.
+            var start = appt.DataOra;
+            var end = appt.DataOra.AddMinutes(30);
+
+            bool doctorOverlap = Programari.AsNoTracking()
+                .Where(p => p.Id != appt.Id
+                            && p.MedicId == appt.MedicId
+                            && p.Status != StatusProgramare.Anulata)
+                .Any(p => start < p.DataOra.AddMinutes(30) && p.DataOra < end);
+            if (doctorOverlap)
+                throw new ValidationException("Medicul are deja o programare care se suprapune în acest interval.");
+
+            bool patientOverlap = Programari.AsNoTracking()
+                .Where(p => p.Id != appt.Id
+                            && p.PacientId == appt.PacientId
+                            && p.Status != StatusProgramare.Anulata)
+                .Any(p => start < p.DataOra.AddMinutes(30) && p.DataOra < end);
+            if (patientOverlap)
+                throw new ValidationException("Pacientul are deja o programare care se suprapune în acest interval.");
+        }
+    }
+    #endregion
 }
