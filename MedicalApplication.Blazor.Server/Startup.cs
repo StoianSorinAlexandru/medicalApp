@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.EntityFrameworkCore;
 using MedicalApplication.Blazor.Server.Services;
+using MedicalApplication.Module.Service;
 
 namespace MedicalApplication.Blazor.Server;
 
@@ -24,6 +25,7 @@ public class Startup {
         services.AddRazorPages();
         services.AddServerSideBlazor();
         services.AddHttpContextAccessor();
+        services.AddScoped<ReportService>();
         services.AddScoped<CircuitHandler, CircuitHandlerProxy>();
         services.AddXaf(Configuration, builder => {
             builder.UseApplication<MedicalApplicationBlazorApplication>();

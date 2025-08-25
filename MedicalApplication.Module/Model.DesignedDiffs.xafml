@@ -2,7 +2,9 @@
 <Application Title="MedicalApplication">
   <NavigationItems>
     <Items>
+      <Item Id="Default" Removed="True" />
       <Item Id="Medici" IsNewNode="True" />
+      <Item Id="Reports" Removed="True" />
     </Items>
   </NavigationItems>
   <Options>
