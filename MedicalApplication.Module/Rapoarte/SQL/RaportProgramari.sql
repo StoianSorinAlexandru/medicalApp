@@ -17,9 +17,9 @@ BEGIN
     SELECT
         s.Denumire       AS DenumireSpecializare,
         m.Nume           AS NumeMedic,
-        pa.Nume          AS NumePacient,
-        p.Status,
-        p.DataOra
+        pa.Nume          AS NumePacient
+		--,p.Status
+		--,p.DataOra
     FROM dbo.Programari     AS p
     LEFT JOIN dbo.Medici        AS m  ON p.MedicId        = m.Id
     LEFT JOIN dbo.Pacienti      AS pa ON p.PacientId      = pa.Id
@@ -36,3 +36,7 @@ BEGIN
 END
 GO
 --END
+
+
+EXEC RaportProgramari
+@Data = '08.23.2025'

@@ -18,7 +18,6 @@ namespace MedicalApplication.Module.Rapoarte.Manager
             using var command = dbContext.Database.GetDbConnection().CreateCommand();
             command.CommandText = numeProcedura;
             command.CommandType = CommandType.StoredProcedure;
-            // adaugam parametrii procedurii
             foreach (var param in parametrii)
             {
                 var sqlParam = new SqlParameter(param.Nume, param.Valoare);

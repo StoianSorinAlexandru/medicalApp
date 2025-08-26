@@ -8,6 +8,7 @@ using DevExpress.ExpressApp.EFCore.DesignTime;
 using System.Text.Json;
 using System.IO;
 using System.ComponentModel.DataAnnotations;
+using MedicalApplication.Module.DatabaseUpdate;
 
 namespace MedicalApplication.Module.BusinessObjects;
 
@@ -132,6 +133,8 @@ public class MedicalApplicationEFCoreDbContext : DbContext {
             .HasIndex(p => p.MedicId);
         modelBuilder.Entity<Programare>()
             .HasIndex(p => new { p.SpecializareId, p.MedicId });
+
+        ReportDbInitializer.Initialize(modelBuilder);
     }
 
     #region Public - Save Pipeline Validation
@@ -205,6 +208,7 @@ public class MedicalApplicationEFCoreDbContext : DbContext {
                 .Any(p => start < p.DataOra.AddMinutes(30) && p.DataOra < end);
             if (patientOverlap)
                 throw new ValidationException("Pacientul are deja o programare care se suprapune în acest interval.");
+
         }
     }
     #endregion

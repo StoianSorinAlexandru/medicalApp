@@ -50,19 +50,7 @@ public class Updater : ModuleUpdater {
         var tz = TimeZoneInfo.FindSystemTimeZoneById("Europe/Bucharest");
         var nowRo = TimeZoneInfo.ConvertTime(DateTime.UtcNow, tz).Date.AddHours(10);
 
-        void EnsureProgramare(DateTime start, Specializare s, Medic m, Pacient p)
-        {
-            var existing = ObjectSpace.FirstOrDefault<Programare>(x => x.DataOra == start && x.Medic == m && x.Pacient == p);
-            if (existing == null)
-            {
-                var pr = ObjectSpace.CreateObject<Programare>();
-                pr.DataOra = start;
-                pr.Status = StatusProgramare.Planificata;
-                pr.Specializare = s;
-                pr.Medic = m;
-                pr.Pacient = p;
-            }
-        }
+
 
         EnsureProgramare(nowRo.AddDays(1), specCardio, m1, p1);
         EnsureProgramare(nowRo.AddDays(1).AddMinutes(30), specCardio, m4, p2);
@@ -73,5 +61,19 @@ public class Updater : ModuleUpdater {
     }
     public override void UpdateDatabaseBeforeUpdateSchema() {
         base.UpdateDatabaseBeforeUpdateSchema();
+    }
+
+    private void EnsureProgramare(DateTime start, Specializare s, Medic m, Pacient p)
+    {
+        var existing = ObjectSpace.FirstOrDefault<Programare>(x => x.DataOra == start && x.Medic == m && x.Pacient == p);
+        if (existing == null)
+        {
+            var pr = ObjectSpace.CreateObject<Programare>();
+            pr.DataOra = start;
+            pr.Status = StatusProgramare.Planificata;
+            pr.Specializare = s;
+            pr.Medic = m;
+            pr.Pacient = p;
+        }
     }
 }

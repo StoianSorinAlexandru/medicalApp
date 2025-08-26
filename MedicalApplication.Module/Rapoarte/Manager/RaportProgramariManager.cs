@@ -18,7 +18,7 @@ namespace MedicalApplication.Module.Rapoarte.Manager
 
         public void ConfigurareRaport(MedicalApplicationEFCoreDbContext dbContext, XtraReport report)
         {
-            AppointmentRowRpo rowRpo = (AppointmentRowRpo)report.Parameters["XafReportParameterObject"].Value;
+            AppointmentRowRpo rowRpo = (AppointmentRowRpo)report.Parameters["XafReportParametersObject"].Value;
 
             List<AppointmentRowDto> dataSource = ConstruiesteDataSource(dbContext, rowRpo);
             report.DataSource = dataSource;
@@ -32,7 +32,7 @@ namespace MedicalApplication.Module.Rapoarte.Manager
                 new Parametru()
                 {
                     Nume = "Data",
-                    Valoare = rpo.Data
+                    Valoare = DateTime.Now
                 },
                 new Parametru()
                 {
@@ -41,7 +41,7 @@ namespace MedicalApplication.Module.Rapoarte.Manager
                 },
                 new Parametru()
                 {
-                    Nume = "IdSpecicializare",
+                    Nume = "IdSpecializare",
                     Valoare = rpo.IdSpecializare
                 }
             };
@@ -54,17 +54,15 @@ namespace MedicalApplication.Module.Rapoarte.Manager
             {
                 row = new AppointmentRowDto
                 {
-                    Data = Convert.ToDateTime(dataRow[nameof(row.Data)]),
+                    //Data = Convert.ToDateTime(dataRow[nameof(row.Data)]),
                     NumeMedic = dataRow[nameof(row.NumeMedic)].ToString(),
                     NumePacient = dataRow[nameof(row.NumePacient)].ToString(),
                     DenumireSpecializare = dataRow[nameof(row.DenumireSpecializare)].ToString(),
-                    Status = dataRow[nameof(row.Status)].ToString()
+                    //Status = dataRow[nameof(row.Status)].ToString()
                 };
                 result.Add(row);
             }
-
             return result;
-
         }
 
         public void ConfigurareRPO(MedicalApplicationEFCoreDbContext dbContext, AppointmentRowRpo rpo, object obiectCurent)

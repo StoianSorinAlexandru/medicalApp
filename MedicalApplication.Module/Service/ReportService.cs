@@ -41,7 +41,7 @@ namespace MedicalApplication.Module.Service
 
         public void ShowReport(Frame frame, List<object> obiecteCurente)
         {
-            string denumireRaport = "";
+            string denumireRaport = "RaportProgramariReport";
             IReportDataV2 reportData = InitailizeReportDataV2(denumireRaport, frame, obiecteCurente); 
             if(reportData == null)
             {
